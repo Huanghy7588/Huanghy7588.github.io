@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任嘉伦 | 粉丝网站（自制版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // Tailwind 配置 - 采用任嘉伦相关主题色
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jialun: {
+                            primary: '#E63946',    // 嘉伦红
+                            secondary: '#457B9D',  // 影视蓝
+                            accent: '#F1FAEE',     // 浅色背景
+                            dark: '#1D3557',       // 深色文字
+                            light: '#F1FAEE'       // 浅色文字
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+            .scale-hover {
+                @apply hover:scale-105 transition-custom;
+            }
+            .card-hover {
+                @apply hover:shadow-xl hover:-translate-y-1 transition-custom;
+            }
+            .bg-blur {
+                backdrop-filter: blur(8px);
+            }
+            /* 竖屏图片容器样式 - 2:3比例（宽度:高度） */
+            .vertical-img-container {
+                @apply relative w-full overflow-hidden;
+                padding-top: 150%; /* 高度 = 宽度 * 1.5，实现2:3竖屏比例 */
+            }
+            .vertical-img {
+                @apply absolute top-0 left-0 w-full h-full object-cover;
+            }
+            /* 音乐专辑封面样式 - 1:1比例 */
+            .album-img-container {
+                @apply relative w-full overflow-hidden;
+                padding-top: 100%; /* 1:1 正方形比例 */
+            }
+            .album-img {
+                @apply absolute top-0 left-0 w-full h-full object-cover;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans bg-jialun-accent text-jialun-dark antialiased">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="#" class="text-2xl font-bold text-white text-shadow flex items-center">
+                    <span class="text-jialun-primary mr-2"><i class="fa fa-star"></i></span>
+                    <span>任嘉伦</span>
+                </a>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-white hover:text-jialun-primary transition-custom">首页</a>
+                    <a href="#about" class="text-white hover:text-jialun-primary transition-custom">个人简介</a>
+                    <a href="#works" class="text-white hover:text-jialun-primary transition-custom">代表作品</a>
+                    <a href="#gallery" class="text-white hover:text-jialun-primary transition-custom">照片墙</a>
+                </nav>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-jialun-dark/90 bg-blur">
+            <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                <a href="#home" class="text-white hover:text-jialun-primary py-2 transition-custom">首页</a>
+                <a href="#about" class="text-white hover:text-jialun-primary py-2 transition-custom">个人简介</a>
+                <a href="#works" class="text-white hover:text-jialun-primary py-2 transition-custom">代表作品</a>
+                <a href="#gallery" class="text-white hover:text-jialun-primary py-2 transition-custom">照片墙</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- 背景图 -->
+        <div class="absolute inset-0 z-0">
+            <img src="img/任嘉伦背景图.heif" alt="任嘉伦背景图" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-jialun-dark/70 via-jialun-dark/50 to-jialun-dark"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-bold text-white leading-tight mb-6 text-shadow animate-fade-in">
+                任嘉伦<br>
+                <span class="text-jialun-primary">Allen Ren</span>
+            </h1>
+            <p class="text-[clamp(1rem,3vw,1.5rem)] text-gray-200 mb-10 max-w-3xl mx-auto">
+                演员 | 歌手 | 舞者<br>
+                用心演绎每一个角色，用爱对待每一位粉丝
+            </p>
+        </div>
+        
+        <!-- 滚动指示器 -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-white/80 hover:text-white text-2xl transition-custom">
+                <i class="fa fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 个人简介 -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">个人<span class="text-jialun-primary">简介</span></h2>
+                <div class="w-20 h-1 bg-jialun-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-3xl mx-auto">了解任嘉伦的成长历程、演艺生涯和个人成就</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- 个人简介图片区域 - 改为一张图片 -->
+                <div class="relative rounded-2xl overflow-hidden shadow-lg">
+                    <img src="img/个人介绍图1.png" alt="任嘉伦写真" class="w-full h-full object-cover">
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">任嘉伦 <span class="text-gray-500 text-lg">(Allen Ren)</span></h3>
+                    
+                    <div class="space-y-4 mb-8">
+                        <p class="text-gray-700 leading-relaxed">
+                            任嘉伦，原名任国超，1989年4月11日出生于山东省青岛市，中国内地男演员、歌手、舞者。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            早年经历丰富，曾是山东省乒乓球队队员，因伤退役后转型进入娱乐圈。2010年参加《先声夺金，唱响亚运》比赛获得全国八强，从而正式进入演艺圈。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            2016年，凭借古装剧《大唐荣耀》中李俶一角获得广泛关注，并演唱了剧中插曲《荣耀》。此后，他在《锦衣之下》《周生如故》《一生一世》等多部热门剧集中担任男主角，塑造了多个深入人心的角色。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            任嘉伦以扎实的演技、俊朗的外形和谦逊的性格深受观众喜爱，是娱乐圈中兼具实力与人气的艺人。
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-jialun-accent p-4 rounded-lg text-center card-hover">
+                            <p class="font-bold text-jialun-primary text-xl">30+</p>
+                            <p class="text-sm text-gray-600">影视作品</p>
+                        </div>
+                        <div class="bg-jialun-accent p-4 rounded-lg text-center card-hover">
+                            <p class="font-bold text-jialun-primary text-xl">15+</p>
+                            <p class="text-sm text-gray-600">音乐作品</p>
+                        </div>
+                        <div class="bg-jialun-accent p-4 rounded-lg text-center card-hover">
+                            <p class="font-bold text-jialun-primary text-xl">20+</p>
+                            <p class="text-sm text-gray-600">获奖荣誉</p>
+                        </div>
+                        <div class="bg-jialun-accent p-4 rounded-lg text-center card-hover">
+                            <p class="font-bold text-jialun-primary text-xl">10M+</p>
+                            <p class="text-sm text-gray-600">粉丝数量</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 代表作品 -->
+    <section id="works" class="py-20 bg-jialun-accent">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">代表<span class="text-jialun-primary">作品</span></h2>
+                <div class="w-20 h-1 bg-jialun-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-3xl mx-auto">任嘉伦主演的经典影视作品，每一部都值得细细品味</p>
+            </div>
+            
+            <!-- 作品分类 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="work-filter active px-6 py-2 rounded-full bg-jialun-primary text-white font-medium transition-custom" data-filter="all">全部</button>
+                <button class="work-filter px-6 py-2 rounded-full bg-white text-jialun-dark font-medium hover:bg-jialun-primary hover:text-white transition-custom" data-filter="drama">电视剧</button>
+                <button class="work-filter px-6 py-2 rounded-full bg-white text-jialun-dark font-medium hover:bg-jialun-primary hover:text-white transition-custom" data-filter="music">音乐</button>
+            </div>
+            
+            <!-- 作品展示 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 电视剧作品 -->
+                <!-- 1. 大唐荣耀 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/大唐荣耀.jpeg" alt="大唐荣耀" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">大唐荣耀</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：李俶</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            安史之乱背景下，广平王李俶与沈珍珠的乱世爱情故事。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E5%A4%A7%E5%94%90%E8%8D%A3%E8%80%80/19652122" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. 通天狄仁杰 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/通天狄仁杰.jpeg" alt="通天狄仁杰" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">通天狄仁杰</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：狄仁杰</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            唐高宗年间，狄仁杰破解奇案、维护大唐稳定的故事。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E9%80%9A%E5%A4%A9%E7%8B%84%E4%BB%81%E6%9D%B0/301875" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. 天乩之白蛇传说 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/白蛇.jpeg" alt="天乩之白蛇传说" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">天乩之白蛇传说</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：许宣/紫宣</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            改编自《白蛇传》，小白蛇与药师宫许宣的前世今生之恋。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E5%A4%A9%E4%B9%A9%E4%B9%8B%E7%99%BD%E8%9B%87%E4%BC%A0%E8%AF%B4/20385408" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. 锦衣之下 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/锦衣之下.jpeg" alt="锦衣之下" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">锦衣之下</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：陆绎</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            锦衣卫陆绎与六扇门女捕快袁今夏的欢喜冤家探案故事。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E9%94%A6%E8%A1%A3%E4%B9%8B%E4%B8%8B/22079557" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 5. 周生如故 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/周生如故.jpeg" alt="周生如故" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">周生如故</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：周生辰</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            坐拥数十万大军的小南辰王与名门漼氏独女的师徒虐恋。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E5%91%A8%E7%94%9F%E5%A6%82%E6%95%85/58305245" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 6. 一生一世 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/一生一世.jpeg" alt="一生一世" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">一生一世</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：周生辰</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            化学教授周生辰与配音演员时宜的现代都市爱情故事。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E4%B8%80%E7%94%9F%E4%B8%80%E4%B8%96/50362132" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 7. 流水迢迢 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/流水迢迢.jpeg" alt="流水迢迢" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">流水迢迢</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：卫昭</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            月落城少城主化名潜伏，在复仇路上与少女江慈的爱恨纠葛。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E6%B5%81%E6%B0%B4%E8%BF%A2%E8%BF%A2/17832748" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 8. 无忧渡 -->
+                <div class="work-item drama bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="vertical-img-container">
+                        <img src="img/无忧渡.jpeg" alt="无忧渡" class="vertical-img">
+                        <div class="absolute top-4 left-4 bg-jialun-primary text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            电视剧
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">无忧渡</h3>
+                        <p class="text-gray-600 text-sm mb-3">饰演：久宣夜</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            神秘捉妖师与能探知妖怪内心的少女携手破获奇情悬案。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E6%97%A0%E5%BF%A7%E6%B8%A1/53965428" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 音乐作品 -->
+                <div class="work-item music bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="album-img-container">
+                        <img src="img/心墙.webp" alt="心墙" class="album-img">
+                        <div class="absolute top-4 left-4 bg-green-600 text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            音乐
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">心墙</h3>
+                        <p class="text-gray-600 text-sm mb-3">发行于2019年12月27日</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            电视剧《锦衣之下》的片尾曲，由周晓宜、吴若妍作词，朱芸编作曲。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E5%BF%83%E5%A2%99/24262398" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="work-item music bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="album-img-container">
+                        <img src="img/荣耀.webp" alt="荣耀" class="album-img">
+                        <div class="absolute top-4 left-4 bg-green-600 text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            音乐
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">荣耀</h3>
+                        <p class="text-gray-600 text-sm mb-3">发行于2017年1月20日</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            电视剧《大唐荣耀》的插曲，由任嘉伦演唱，陈曦作词，董冬冬作曲。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E8%8D%A3%E8%80%80/20391284" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 新增的音乐作品：不说再见 -->
+                <div class="work-item music bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="album-img-container">
+                        <img src="img/不说再见.webp" alt="不说再见" class="album-img">
+                        <div class="absolute top-4 left-4 bg-green-600 text-white text-sm font-bold px-3 py-1 rounded-full z-10">
+                            音乐
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2">不说再见</h3>
+                        <p class="text-gray-600 text-sm mb-3">发行于2021年6月22日</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">
+                            电视剧《不说再见》的同名主题曲，由浅紫创作词曲，任嘉伦演唱。
+                        </p>
+                        <a href="https://baike.baidu.com/item/%E4%B8%8D%E8%AF%B4%E5%86%8D%E8%A7%81/22080470" target="_blank" class="text-jialun-primary font-medium hover:underline flex items-center text-sm">
+                            了解更多 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 照片墙 -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">照片<span class="text-jialun-primary">墙</span></h2>
+                <div class="w-20 h-1 bg-jialun-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-3xl mx-auto">任嘉伦的精彩瞬间与写真照片</p>
+            </div>
+            
+            <!-- 照片墙内容 - 不固定比例且不加标签 -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片1.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片2.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片3.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片4.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片5.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片6.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片7.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片8.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片9.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片10.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片11.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片12.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片13.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片14.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片15.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片16.jpg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片17.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片18.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片19.jpg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片20.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片21.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片22.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片23.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片24.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片25.jpg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片26.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片27.jpeg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="overflow-hidden rounded-lg card-hover">
+                    <img src="img/照片28.jpg" alt="任嘉伦照片" class="w-full h-auto transition-transform duration-500 hover:scale-110">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-jialun-dark text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold flex items-center">
+                        <span class="text-jialun-primary mr-2"><i class="fa fa-star"></i></span>
+                        <span>任嘉伦</span>
+                    </a>
+                    <p class="text-gray-400 mt-2">用心演绎每一个角色</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://m.weibo.cn/u/3800468188" target="_blank" class="text-white hover:text-jialun-primary text-xl transition-custom">
+                        <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2025 任嘉伦粉丝自制网站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-jialun-dark/90', 'bg-blur', 'shadow-lg');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('bg-jialun-dark/90', 'bg-blur', 'shadow-lg');
+                navbar.classList.add('bg-transparent');
+            }
+        });
+        
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+        
+        // 作品筛选功能
+        const filterButtons = document.querySelectorAll('.work-filter');
+        const workItems = document.querySelectorAll('.work-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 更新按钮样式
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-jialun-primary', 'text-white');
+                    btn.classList.add('bg-white', 'text-jialun-dark', 'hover:bg-jialun-primary', 'hover:text-white');
+                });
+                button.classList.remove('bg-white', 'text-jialun-dark', 'hover:bg-jialun-primary', 'hover:text-white');
+                button.classList.add('bg-jialun-primary', 'text-white');
+                
+                const filter = button.getAttribute('data-filter');
+                
+                // 筛选作品
+                workItems.forEach(item => {
+                    if (filter === 'all' || item.classList.contains(filter)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    
